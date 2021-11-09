@@ -3,7 +3,8 @@ class OperatorsController < ApplicationController
   before_action :request_to
 
   def create
-
+    OperatorJob.perform_later(params[:payload][:gid])
+    head :ok
   end
 
   private

@@ -1,4 +1,5 @@
 class Operator < ApplicationRecord
+  belongs_to :vertex_robot
 
   def route(vertex_field_attributes = [], propose_id = nil)
     params = route_params(vertex_field_attributes, propose_id)

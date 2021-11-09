@@ -3,8 +3,10 @@ class OperatorsController < ApplicationController
   before_action :request_to
 
   def create
-    OperatorJob.perform_later(params[:payload][:gid])
-    head :ok
+    unless @operators.nil?
+      OperatorJob.perform_later(@operators.id)
+    end
+    render status: :created
   end
 
   private

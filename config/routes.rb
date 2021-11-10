@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  resources :operators
+  resources :operators, only: [:create]
 end

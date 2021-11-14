@@ -1,10 +1,10 @@
-class OperatorsController < ApplicationController
+class Liaoliao::OperatorsController < ApplicationController
   before_action :find_vertex_robot
   before_action :request_to
 
-  def create
+  def receive
     unless @operators.nil?
-      OperatorJob.perform_later(@operators.id)
+      OperatorJob.perform_now(@operators.id)
     end
     render status: :created
   end

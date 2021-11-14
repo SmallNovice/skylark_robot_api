@@ -4,7 +4,10 @@ class Form
 
   def self.build_form(form_id)
     response =
-      skylark_service.get_form(form_id)
+      Skylark::Tools.retryable do
+        skylark_service.get_form(form_id)
+      end
+
     parse_response = JSON.parse(response)
 
     fields =
@@ -32,7 +35,9 @@ class Form
     }
 
     response =
-      skylark_service.search_form_response(id, query_params)
+      Skylark::Tools.retryable do
+        skylark_service.search_form_response(id, query_params)
+      end
 
     JSON.parse(response)
   end

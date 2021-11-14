@@ -22,13 +22,15 @@ class Operator < ApplicationRecord
   private
 
   def assignment_request(params)
-    RestClient::Request.execute(
-      method: :post,
-      url: webhook_url,
-      payload: params,
-      headers: authorization_token,
-      timeout: 3
-    )
+    Skylark::Tools.retryable do
+      RestClient::Request.execute(
+        method: :post,
+        url: webhook_url,
+        payload: params,
+        headers: authorization_token,
+        timeout: 3
+      )
+    end
   end
 
   def authorization_token

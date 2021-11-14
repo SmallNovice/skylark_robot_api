@@ -7,6 +7,12 @@ class Operator < ApplicationRecord
     assignment_request(params)
   end
 
+  def refuse(vertex_field_attributes = [], comment = '')
+    params = refuse_params(vertex_field_attributes, comment)
+
+    assignment_request(params)
+  end
+
   def approve(comment, next_vertex_id, next_reviewer_ids = [])
     params = approve_params(comment, next_vertex_id, next_reviewer_ids)
 

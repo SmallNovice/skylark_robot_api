@@ -3,8 +3,8 @@ class Liaoliao::OperatorsController < ApplicationController
   before_action :request_to
 
   def receive
-    unless @operators.nil?
-      OperatorJob.perform_now(@operators.id)
+    unless @operator.nil?
+      OperatorJob.perform_now(@operator.id)
     end
     render status: :created
   end
@@ -21,9 +21,9 @@ class Liaoliao::OperatorsController < ApplicationController
   end
 
   def set_operators
-    @operators = Operator.new(operator_params)
-    @operators.vertex_robot = @vertex_robot
-    @operators.save
+    @operator = Operator.new(operator_params)
+    @operator.vertex_robot = @vertex_robot
+    @operator.save
   end
 
   def find_vertex_robot
@@ -53,7 +53,7 @@ class Liaoliao::OperatorsController < ApplicationController
     {
       vertex_gid: params[:payload][:gid],
       webhook_url: params[:payload][:callback_url],
-      entries: params[:payload][:data][:journey][:response][:entries],
+      entries: params[:payload][:data][:journey][:response],
       vertex: params[:payload][:data][:vertex],
       journey_user: params[:payload][:data][:journey][:user],
       journey_sn: params[:payload][:data][:journey][:sn]

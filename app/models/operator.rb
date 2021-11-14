@@ -60,6 +60,18 @@ class Operator < ApplicationRecord
     }
   end
 
+  def refuse_params(vertex_field_attributes, comment)
+    params = { assignment: { operation: 'refuse', comment: comment } }
+
+    unless vertex_field_attributes.empty?
+      params[:assignment][:response_attributes] = {
+        entries_attributes: vertex_field_attributes
+      }
+    end
+
+    params
+  end
+
   def route_params(vertex_field_attributes, propose_id = nil)
     params = { assignment: { operation: 'route' } }
 

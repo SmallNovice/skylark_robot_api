@@ -1,4 +1,5 @@
 class SkylarkService
+  include Skylark::Tools
   attr_reader :appid, :appsecret, :namespace_id, :host
 
   def initialize

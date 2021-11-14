@@ -1,5 +1,6 @@
 class Form
   include ActiveModel::Model
+  include Skylark::Tools
   attr_accessor :id, :title, :fields, :skylark_service
 
   def self.build_form(form_id)

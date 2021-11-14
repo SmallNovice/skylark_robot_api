@@ -2,7 +2,7 @@ module Skylark
   module Tools
     module_function
 
-    def retryable(options = {})
+    def self.retryable(options = {})
       opts = { tries: 3, on: Exception }.merge(options)
       retry_exception, retries = opts[:on], opts[:tries]
 

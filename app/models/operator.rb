@@ -1,4 +1,5 @@
 class Operator < ApplicationRecord
+  include Skylark::Tools
   belongs_to :vertex_robot
 
   def route(vertex_field_attributes = [], propose_id = nil)

@@ -3,10 +3,8 @@ class Liaoliao::OperatorsController < ApplicationController
   before_action :request_to
 
   def receive
-    unless @operator.nil?
-      OperatorJob.perform_now(@operator.id)
-    end
-    render status: :created
+    OperatorJob.perform_later(@operator.id)
+    head :ok
   end
 
   private
@@ -21,7 +19,7 @@ class Liaoliao::OperatorsController < ApplicationController
   end
 
   def set_operators
-    @operator = Operator.new(operator_params)
+    @operator = @vertex_robot.operators.new(operator_params)
     @operator.vertex_robot = @vertex_robot
     @operator.save
   end
@@ -47,6 +45,7 @@ class Liaoliao::OperatorsController < ApplicationController
         external_settings: params.dig('payload', 'flow', 'external_settings')
       )
     end
+    head :ok
   end
 
   def operator_params

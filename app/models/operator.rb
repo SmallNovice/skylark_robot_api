@@ -20,6 +20,25 @@ class Operator < ApplicationRecord
     assignment_request(params)
   end
 
+  def match_user_info?
+    @flow_fields_value = parameters_to_hash(entries)
+
+    key, value = @flow_fields_value.first
+
+    form_response_fields = Form.build_form(vertex_robot.external_settings["user_white_list"]).search_responses(key => value)[0]
+
+    form_fields_value = parameters_to_hash(form_response_fields)
+
+    %w(name id_card street).each do |_key|
+      return false unless form_fields_value[_key.to_sym] == @flow_fields_value[_key.to_sym]
+    end
+  end
+
+  def get_next_vertice_id(route_response)
+    next_vertice = route_response.detect { |next_vertice| @flow_fields_value[:street] == next_vertice['name'] }
+    next_vertice['id']
+  end
+
   private
 
   def assignment_request(params)
@@ -89,5 +108,13 @@ class Operator < ApplicationRecord
     else
       params
     end
+  end
+
+  def parameters_to_hash(parameters_to_converted)
+    {
+      name: parameters_to_converted.dig('mapped_values', 'name', 'text_value', 0),
+      id_card: parameters_to_converted.dig('mapped_values', 'id_card', 'text_value', 0),
+      street: parameters_to_converted.dig('mapped_values', 'street', 'text_value', 0)
+    }
   end
 end

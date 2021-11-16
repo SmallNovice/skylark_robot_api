@@ -20,7 +20,6 @@ class Liaoliao::OperatorsController < ApplicationController
 
   def set_operators
     @operator = @vertex_robot.operators.new(operator_params)
-    @operator.vertex_robot = @vertex_robot
     @operator.save
   end
 

@@ -1,12 +1,10 @@
-class OperatorsController < ApplicationController
+class Liaoliao::OperatorsController < ApplicationController
   before_action :find_vertex_robot
   before_action :request_to
 
-  def create
-    unless @operators.nil?
-      OperatorJob.perform_later(@operators.id)
-    end
-    render status: :created
+  def receive
+    OperatorJob.perform_later(@operator.id)
+    head :ok
   end
 
   private
@@ -21,9 +19,8 @@ class OperatorsController < ApplicationController
   end
 
   def set_operators
-    @operators = Operator.new(operator_params)
-    @operators.vertex_robot = @vertex_robot
-    @operators.save
+    @operator = @vertex_robot.operators.new(operator_params)
+    @operator.save
   end
 
   def find_vertex_robot
@@ -47,13 +44,14 @@ class OperatorsController < ApplicationController
         external_settings: params.dig('payload', 'flow', 'external_settings')
       )
     end
+    head :ok
   end
 
   def operator_params
     {
       vertex_gid: params[:payload][:gid],
       webhook_url: params[:payload][:callback_url],
-      entries: params[:payload][:data][:journey][:response][:entries],
+      entries: params[:payload][:data][:journey][:response],
       vertex: params[:payload][:data][:vertex],
       journey_user: params[:payload][:data][:journey][:user],
       journey_sn: params[:payload][:data][:journey][:sn]
